@@ -35,24 +35,40 @@ echo Using branch: !currentBranch!
 echo.
 
 :: -------------------------------------------------
-:: 3) Ensure .gitignore exists (for C# / VS projects)
+:: 3) Ensure .gitignore exists (C# / .NET Framework)
 :: -------------------------------------------------
 if not exist ".gitignore" (
-    echo Creating .gitignore for Visual Studio projects...
+    echo Creating .gitignore for C# .NET Framework projects...
     (
-        echo # Build results
+        echo # Build output
         echo bin/
         echo obj/
         echo
-        echo # User-specific files
+        echo # Visual Studio settings
+        echo .vs/
         echo *.user
         echo *.suo
         echo *.cache
+        echo *.userosscache
+        echo *.sln.docstates
         echo
-        echo # Executables
+        echo # NuGet packages
+        echo packages/
+        echo *.nupkg
+        echo
+        echo # Compiled output
         echo *.exe
         echo *.dll
+        echo *.pdb
+        echo *.pdb
+        echo
+        echo # Logs and temp files
+        echo *.log
+        echo Thumbs.db
+        echo Desktop.ini
     ) > .gitignore
+    echo .gitignore created.
+    echo.
 )
 
 :: -------------------------------------------------
