@@ -27,7 +27,7 @@ and see the result update in real time — just like a real ordering system.
 
 ## 🖼️ Application Preview
 
-<img width="800" height="468" alt="image" src="https://github.com/user-attachments/assets/c404c0a5-1572-420d-b68e-16c5fb10272a" />
+<img width="800" height="504" alt="image" src="https://github.com/user-attachments/assets/c404c0a5-1572-420d-b68e-16c5fb10272a" />
 
 
 ---
