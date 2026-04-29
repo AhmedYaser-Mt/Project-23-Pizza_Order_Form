@@ -35,38 +35,111 @@ echo Using branch: !currentBranch!
 echo.
 
 :: -------------------------------------------------
-:: 3) Ensure .gitignore exists (C# / .NET Framework)
+:: 3) Detect project type and create .gitignore
 :: -------------------------------------------------
 if not exist ".gitignore" (
-    echo Creating .gitignore for C# .NET Framework projects...
-    (
-        echo # Build output
-        echo bin/
-        echo obj/
-        echo
-        echo # Visual Studio settings
-        echo .vs/
-        echo *.user
-        echo *.suo
-        echo *.cache
-        echo *.userosscache
-        echo *.sln.docstates
-        echo
-        echo # NuGet packages
-        echo packages/
-        echo *.nupkg
-        echo
-        echo # Compiled output
-        echo *.exe
-        echo *.dll
-        echo *.pdb
-        echo *.pdb
-        echo
-        echo # Logs and temp files
-        echo *.log
-        echo Thumbs.db
-        echo Desktop.ini
-    ) > .gitignore
+
+    set "isCSharp=0"
+    for %%f in (*.csproj *.sln) do set "isCSharp=1"
+
+    set "isCpp=0"
+    for %%f in (*.vcxproj *.cpp *.h) do set "isCpp=1"
+
+    if "!isCSharp!"=="1" (
+        echo Detected: C# .NET project
+        echo Creating .gitignore for C# .NET Framework...
+        (
+            echo # ---- Batch files
+            echo *.bat
+            echo.
+            echo # ---- Build output
+            echo bin/
+            echo obj/
+            echo.
+            echo # ---- Visual Studio settings
+            echo .vs/
+            echo *.user
+            echo *.suo
+            echo *.cache
+            echo *.userosscache
+            echo *.sln.docstates
+            echo.
+            echo # ---- NuGet packages
+            echo packages/
+            echo *.nupkg
+            echo.
+            echo # ---- Compiled output
+            echo *.exe
+            echo *.dll
+            echo *.pdb
+            echo.
+            echo # ---- Logs and temp files
+            echo *.log
+            echo Thumbs.db
+            echo Desktop.ini
+        ) > .gitignore
+
+    ) else if "!isCpp!"=="1" (
+        echo Detected: C++ project
+        echo Creating .gitignore for C++...
+        (
+            echo # ---- Batch files
+            echo *.bat
+            echo.
+            echo # ---- Build output
+            echo bin/
+            echo obj/
+            echo Debug/
+            echo Release/
+            echo x64/
+            echo x86/
+            echo.
+            echo # ---- Visual Studio settings
+            echo .vs/
+            echo *.user
+            echo *.suo
+            echo *.cache
+            echo *.sdf
+            echo *.opensdf
+            echo *.VC.db
+            echo *.VC.opendb
+            echo ipch/
+            echo.
+            echo # ---- Compiled output
+            echo *.exe
+            echo *.dll
+            echo *.pdb
+            echo *.ilk
+            echo *.obj
+            echo *.lib
+            echo *.exp
+            echo.
+            echo # ---- Logs and temp files
+            echo *.log
+            echo Thumbs.db
+            echo Desktop.ini
+        ) > .gitignore
+
+    ) else (
+        echo Could not detect project type. Creating general .gitignore...
+        (
+            echo # ---- Batch files
+            echo *.bat
+            echo.
+            echo # ---- Common build/temp files
+            echo bin/
+            echo obj/
+            echo .vs/
+            echo *.user
+            echo *.exe
+            echo *.dll
+            echo *.pdb
+            echo *.log
+            echo Thumbs.db
+            echo Desktop.ini
+        ) > .gitignore
+    )
+
     echo .gitignore created.
     echo.
 )
@@ -115,7 +188,7 @@ if errorlevel 1 (
 )
 
 :: -------------------------------------------------
-:: 6) Ask for GitHub repository URL (every time)
+:: 6) Ask for GitHub repository URL
 :: -------------------------------------------------
 set "repoURL="
 set /p "repoURL=Enter GitHub repository URL: "
